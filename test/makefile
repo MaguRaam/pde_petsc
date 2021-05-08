@@ -1,7 +1,7 @@
 
 CC		=	g++
 CXXFLAGS	=	-std=c++14 -Wall -O3
-TARGET		=	thomas
+TARGET		=	jacobi
 
 all : $(TARGET)
 

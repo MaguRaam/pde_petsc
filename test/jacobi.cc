@@ -42,7 +42,7 @@ void write_vtk(double **u, int Nx, int Ny, const double *x, const double *y, dou
     std::ofstream vtk(filename, ios::out);
     vtk.flags(ios::dec | ios::scientific);
     vtk.precision(16);
-    if(!vtk) {cerr<< "Error: Output file couldnot be opened.\n";}
+    if(!vtk) {cerr<< "Error: Output file couldnot be opened.\n";exit(1);}
 
     vtk << "# vtk DataFile Version 2.0" << "\n";
     vtk << "2D Jacobi" << "\n";
@@ -110,7 +110,7 @@ int main()
     double residual = 0.0, hx, hy;
 
     //grid:
-    int Nx = 100, Ny = 100, i, j, iter = 0, n = 10;
+    int Nx = 100, Ny = 100, i, j, iter = 0, n = 20;
 
     //create grid:
     x = new double[Nx + 1];
@@ -158,12 +158,15 @@ int main()
 		residual = residue(u, b, hx, Nx);
 
 		//write data:
-		if (iter % 1000 == 0) write_vtk(u, Nx, Ny, x, y, 0, iter);
+		//if (iter % 1000 == 0) write_vtk(u, Nx, Ny, x, y, 0, iter);
 
 
 	} while (residual > 1e-10);
 
-	std::cout<<iter<<std::endl;
+    //write no of iterations for given wave number
+    std::ofstream Iter("Iter.dat", ios::app);
+    if(!Iter) {cerr<< "Error: Output file couldnot be opened.\n";exit(1);}
+	Iter<<n<<"\t"<<iter<<std::endl;
 	error_norm(u, uExact, Nx, Ny);	
 
     delete[] x;

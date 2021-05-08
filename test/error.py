@@ -2,7 +2,9 @@ import numpy
 from matplotlib import pyplot, cm
 from math import log
 
-def convergence_plot(Ngpts,l2,linfty,filename):
+
+
+def convergence_plot(N,l2,linfty,filename):
   fig,ax = pyplot.subplots()
   pyplot.loglog(N, linfty,'-b',label = 'Linfty error',marker = 'o')
   pyplot.loglog(N, l2,'--r',label = 'L2 error',marker = 'o')
@@ -19,15 +21,14 @@ def convergence_rate(error):
 
 
 
-N  = numpy.array([25,50,100,200,400])
-linfty = numpy.array([1.37484e-04, 3.23376e-05, 8.37462e-06, 2.08591e-06, 5.20994e-07])  
-l2     = numpy.array([1.00234e-04, 2.38060e-05, 5.89236e-06, 1.47128e-06, 3.67939e-07])
-convergence_plot(N,l2,linfty,"error")
+#load N, l2 and linfty
+data = numpy.loadtxt("Error.dat")
+convergence_plot(data[:,0],data[:,1],data[:,2],"results/helmholtz")
 
 #L2 rate of convergence
 print("L2 Rate of convergence:")
-convergence_rate(l2)
+convergence_rate(data[:,1])
 
 #linfty rate of convergence:
 print("Linfty Rate of convergence")
-convergence_rate(linfty)
+convergence_rate(data[:,2])

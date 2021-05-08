@@ -103,5 +103,6 @@ int main() {
 	delete[] x ; delete [] u ; 
 	delete [] RHS ; delete [] Sol ;
 	delete[] b ; delete[] d ; delete[] a ; 
+	
 	return 0;
 }

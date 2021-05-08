@@ -29,7 +29,7 @@ int main()
     double L2_Error = 0.0, Max_Error = 0.0, hx, hy;
 
     //grid:
-    int Nx = 600, Ny = 600, i, j, k;
+    int Nx = 1600, Ny = 1600, i, j, k;
 
     //create grid:
     x = new double[Nx + 1];
@@ -133,7 +133,14 @@ int main()
 	}
 
     L2_Error = sqrt(L2_Error);
-	cout << "\n L2 : " << L2_Error << "\t Max : " << Max_Error <<  endl ;
+
+    //write error in file
+    std::ofstream File("Error.dat", ios::app);
+    File.flags(ios::dec | ios::scientific);
+    File.precision(16);
+	File << Nx<<"\t" << L2_Error << "\t"<< Max_Error <<  endl ;
+    if(!File) {cerr<< "Error: Output file couldnot be opened.\n"; exit(1);}
+
 
     //write vtk data:
     std::ofstream vtk("Output.vtk", ios::out);
