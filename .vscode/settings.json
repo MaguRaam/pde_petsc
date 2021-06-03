@@ -1,12 +1,5 @@
 {
-    "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "files.associations": {
-        "petsc.h": "c",
-        "dense": "cpp",
-        "core": "cpp",
-        "cmath": "cpp",
-        "ostream": "cpp",
-        "fstream": "cpp",
-        "iostream": "cpp"
+        "petsc.h": "c"
     }
 }

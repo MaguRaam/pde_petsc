@@ -1,5 +1,4 @@
-static char help[] = "Solves 1d poisson equation -d2u/dx2 = sin(x) 
-                      bcs: x = 0 u = 0 and x = 2pi u = 0\n";
+static char help[] = "Solves 1d poisson equation -d2u/dx2 = sin(x) bcs: x = 0 u = 0 and x = 2pi u = 0\n";
 
 #include <petsc.h>
 

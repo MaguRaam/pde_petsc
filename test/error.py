@@ -23,7 +23,7 @@ def convergence_rate(error):
 
 #load N, l2 and linfty
 data = numpy.loadtxt("Error.dat")
-convergence_plot(data[:,0],data[:,1],data[:,2],"results/helmholtz")
+convergence_plot(data[:,0],data[:,1],data[:,2],"results/diffusion")
 
 #L2 rate of convergence
 print("L2 Rate of convergence:")

@@ -28,10 +28,12 @@ int main(int argc, char **argv)
     /*petsc objects*/
     AppCtx           user;
     DM               da;
+    DMDALocalInfo    info;
     TS               ts;
     Vec              u, r;
     Mat              J;
     double           ftime, dt;
+    double           stability;
 
     /*initialize*/
     PetscErrorCode ierr; 
@@ -41,13 +43,16 @@ int main(int argc, char **argv)
     ierr = DMDACreate2d(PETSC_COMM_WORLD, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DMDA_STENCIL_STAR, 100, 100, PETSC_DECIDE, PETSC_DECIDE, 1, 1, NULL, NULL, &da); CHKERRQ(ierr);
     ierr = DMSetFromOptions(da); CHKERRQ(ierr);
     ierr = DMSetUp(da); CHKERRQ(ierr);
+    ierr = DMDAGetLocalInfo(da, &info); 
     ierr = DMDASetUniformCoordinates(da, 0, 1, 0, 1, 0, 0); CHKERRQ(ierr);
     ierr = DMDASetFieldName(da, 0, "u"); CHKERRQ(ierr);
-    
+
+
     /*set simulation parameters*/
     user.c      = 1.0;
     user.ics    = ics;
     user.rhs    = rhs;
+
 
     /*create solution and residual vector*/
     ierr = DMCreateGlobalVector(da, &u); CHKERRQ(ierr);
@@ -63,19 +68,25 @@ int main(int argc, char **argv)
     ierr = DMSetMatType(da, MATAIJ); CHKERRQ(ierr);
     ierr = DMCreateMatrix(da, &J); CHKERRQ(ierr);
     ierr = TSSetRHSJacobian(ts, J, J, RHSJacobian, NULL); CHKERRQ(ierr);
-    ierr = TSMonitorSet(ts, MonitorSolution, &user, NULL); CHKERRQ(ierr);
+    //ierr = TSMonitorSet(ts, MonitorSolution, &user, NULL); CHKERRQ(ierr);
 
-    ftime = 1.0;
+    ftime = 10.0;
     ierr = TSSetMaxTime(ts, ftime); CHKERRQ(ierr);
     ierr = TSSetExactFinalTime(ts, TS_EXACTFINALTIME_MATCHSTEP); CHKERRQ(ierr);
 
     /*set initial condition*/
     ierr = FormInitialSolution(da,u,&user);CHKERRQ(ierr);
-    dt = 0.01;
+    dt = 0.001;
     ierr = TSSetTimeStep(ts, dt); CHKERRQ(ierr);
 
     /*set runtime options*/
     ierr = TSSetFromOptions(ts); CHKERRQ(ierr);
+
+
+    /*compute stability criteria*/
+    stability = user.c*dt*(info.mx - 1)*(info.mx - 1);
+    ierr = PetscPrintf(PETSC_COMM_WORLD, "stability = %.5g",stability); CHKERRQ(ierr);
+
 
     /*solve nonlinear system*/
     ierr = TSSolve(ts, u); CHKERRQ(ierr);

@@ -2,7 +2,7 @@ include ${PETSC_DIR}/lib/petsc/conf/variables
 include ${PETSC_DIR}/lib/petsc/conf/rules
 
 
-TARGET = ex3
+TARGET = ex50
 
 all: $(TARGET)
 

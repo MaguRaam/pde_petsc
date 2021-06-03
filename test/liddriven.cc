@@ -285,7 +285,7 @@ int main() {
 	if ((n % 500) == 0)
 	{
 		std::cout<<"Re = "<<Re<<"\tcfl = "<<cfl<<"\talpha = "<<alpha<<"\tt = "<<t<<std::endl;
-    	write_tecplot(n, t, uu, vv, p(Range(1, nx), Range(1, ny)), div_u(Range(1, nx), Range(1, ny)), mag_u(Range(1, nx), Range(1, ny)), x, y);
+    	write_vtk(n, t, uu, vv, p(Range(1, nx), Range(1, ny)), div_u(Range(1, nx), Range(1, ny)), mag_u(Range(1, nx), Range(1, ny)), x, y);
 	}
 
   }
